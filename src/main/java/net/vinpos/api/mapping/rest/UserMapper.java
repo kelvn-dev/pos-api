@@ -12,7 +12,6 @@ public interface UserMapper {
 
   User dto2Model(UserReqDto dto);
 
-  @Mapping(target = "memberShip", expression = "java(user.getMemberShip().name())")
   UserResDto model2Dto(User user);
 
   //  UserCacheDto model2Cache(User user);

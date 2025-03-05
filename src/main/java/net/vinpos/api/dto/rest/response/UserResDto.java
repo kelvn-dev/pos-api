@@ -1,8 +1,7 @@
 package net.vinpos.api.dto.rest.response;
 
-import lombok.Data;
-
 import java.sql.Timestamp;
+import lombok.Data;
 
 @Data
 public class UserResDto {

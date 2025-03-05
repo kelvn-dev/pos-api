@@ -1,10 +1,10 @@
 package net.vinpos.api.config;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,8 +20,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.List;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -36,6 +34,7 @@ public class SecurityConfig {
   private final String[] bypassPaths = {
     "/swagger-resources/**",
     "/swagger-ui/**",
+    "/v3/api-docs",
     "/v3/api-docs/**",
     "/stomp/**" // To allow the initial HTTP call to stomp handshake endpoint
   };
@@ -130,16 +129,16 @@ public class SecurityConfig {
    *
    * @return a JwtAuthenticationConverter
    */
-    @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-      final JwtGrantedAuthoritiesConverter gac = new JwtGrantedAuthoritiesConverter();
-      gac.setAuthoritiesClaimName("permissions");
-      gac.setAuthorityPrefix("");
+  @Bean
+  public JwtAuthenticationConverter jwtAuthenticationConverter() {
+    final JwtGrantedAuthoritiesConverter gac = new JwtGrantedAuthoritiesConverter();
+    gac.setAuthoritiesClaimName("permissions");
+    gac.setAuthorityPrefix("");
 
-      final JwtAuthenticationConverter jac = new JwtAuthenticationConverter();
-      jac.setJwtGrantedAuthoritiesConverter(gac);
-      return jac;
-    }
+    final JwtAuthenticationConverter jac = new JwtAuthenticationConverter();
+    jac.setJwtGrantedAuthoritiesConverter(gac);
+    return jac;
+  }
 
   @Bean
   public CorsFilter corsFilter() {

@@ -1,18 +1,12 @@
 package net.vinpos.api.service.rest;
 
+import java.util.UUID;
 import net.vinpos.api.dto.rest.request.CategoryReqDto;
-import net.vinpos.api.dto.rest.request.DishReqDto;
 import net.vinpos.api.exception.ConflictException;
 import net.vinpos.api.mapping.rest.CategoryMapper;
-import net.vinpos.api.mapping.rest.DishMapper;
 import net.vinpos.api.model.Category;
-import net.vinpos.api.model.Dish;
 import net.vinpos.api.repository.CategoryRepository;
-import net.vinpos.api.repository.DishRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
-import java.util.concurrent.Executor;
 
 @Service
 public class CategoryService extends BaseService<Category, CategoryRepository> {
@@ -21,7 +15,7 @@ public class CategoryService extends BaseService<Category, CategoryRepository> {
 
   public CategoryService(CategoryRepository repository, CategoryMapper categoryMapper) {
     super(repository);
-      this.categoryMapper = categoryMapper;
+    this.categoryMapper = categoryMapper;
   }
 
   public Category create(CategoryReqDto dto) {

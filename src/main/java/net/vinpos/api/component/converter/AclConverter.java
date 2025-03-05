@@ -1,6 +1,6 @@
 package net.vinpos.api.component.converter;
 
-import net.vinqr.api.exception.BadRequestException;
+import net.vinpos.api.exception.BadRequestException;
 import org.springframework.core.convert.converter.Converter;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 

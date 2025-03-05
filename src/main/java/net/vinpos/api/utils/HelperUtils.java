@@ -1,12 +1,11 @@
 package net.vinpos.api.utils;
 
-import lombok.SneakyThrows;
-import net.vinpos.api.exception.BadRequestException;
-
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.SneakyThrows;
+import net.vinpos.api.exception.BadRequestException;
 
 public class HelperUtils {
 

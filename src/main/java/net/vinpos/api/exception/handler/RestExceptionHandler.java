@@ -1,6 +1,7 @@
 package net.vinpos.api.exception.handler;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import net.vinpos.api.dto.api.ApiError;
 import net.vinpos.api.exception.*;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.util.Objects;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -83,7 +82,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(apiError);
   }
 
-  @ExceptionHandler({vinposException.class, RuntimeException.class, IllegalStateException.class})
+  @ExceptionHandler({VinposException.class, RuntimeException.class, IllegalStateException.class})
   protected ResponseEntity<Object> handleRuntime(RuntimeException ex) {
     ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
     apiError.setMessage(ex.getMessage());

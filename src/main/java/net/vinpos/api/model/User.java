@@ -1,6 +1,8 @@
 package net.vinpos.api.model;
 
 import jakarta.persistence.*;
+import java.time.Instant;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,11 +10,6 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
-
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "app_user")

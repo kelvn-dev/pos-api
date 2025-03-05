@@ -1,6 +1,8 @@
 package net.vinpos.api.controller.rest;
 
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import net.vinpos.api.controller.SecuredRestController;
 import net.vinpos.api.dto.rest.request.CategoryReqDto;
@@ -8,16 +10,12 @@ import net.vinpos.api.mapping.rest.CategoryMapper;
 import net.vinpos.api.model.Category;
 import net.vinpos.api.service.rest.CategoryService;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/categories")
@@ -42,7 +40,8 @@ public class CategoryController implements SecuredRestController {
 
   @PutMapping("/{id}")
   @PreAuthorize("hasAuthority('write:categories')")
-  public ResponseEntity<?> updateById(@Valid @RequestBody CategoryReqDto dto, @PathVariable UUID id) {
+  public ResponseEntity<?> updateById(
+      @Valid @RequestBody CategoryReqDto dto, @PathVariable UUID id) {
     categoryService.updateById(id, dto);
     return ResponseEntity.ok(null);
   }
@@ -56,13 +55,12 @@ public class CategoryController implements SecuredRestController {
 
   @GetMapping
   public ResponseEntity<?> getList(
-          @PageableDefault(
-                  sort = {"createdAt"},
-                  direction = Sort.Direction.DESC)
+      @PageableDefault(
+              sort = {"createdAt"},
+              direction = Sort.Direction.DESC)
           @ParameterObject
           Pageable pageable,
-          @RequestParam(required = false, defaultValue = "") List<String> filter) {
-    Page<Category> categories = categoryService.getList(filter, pageable);
-    return ResponseEntity.ok(categories);
+      @RequestParam(required = false, defaultValue = "") List<String> filter) {
+    return ResponseEntity.ok(categoryMapper.model2Dto(categoryService.getList(filter, pageable)));
   }
 }

@@ -1,9 +1,9 @@
 package net.vinpos.api.service.rest;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import net.vinpos.api.dto.rest.request.PasswordReqDto;
 import net.vinpos.api.dto.rest.request.UserReqDto;
-import net.vinpos.api.enums.MemberShip;
 import net.vinpos.api.exception.BadRequestException;
 import net.vinpos.api.exception.ForbiddenException;
 import net.vinpos.api.exception.NotFoundException;
@@ -13,10 +13,6 @@ import net.vinpos.api.repository.UserRepository;
 import net.vinpos.api.service.provider.Auth0Service;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

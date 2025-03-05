@@ -1,9 +1,10 @@
 package net.vinpos.api.service.provider;
 
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import net.vinpos.api.config.AWSPropConfig;
 import net.vinpos.api.enums.ContentDisposition;
-import net.vinpos.api.exception.vinposException;
+import net.vinpos.api.exception.VinposException;
 import net.vinpos.api.utils.HelperUtils;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -15,8 +16,6 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
-
-import java.time.Duration;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +47,7 @@ public class S3Service {
 
       return s3Presigner.presignPutObject(presignRequest);
     } catch (S3Exception e) {
-      throw new vinposException(e.getMessage());
+      throw new VinposException(e.getMessage());
     }
   }
 
@@ -75,7 +74,7 @@ public class S3Service {
 
       return s3Presigner.presignGetObject(getObjectPresignRequest);
     } catch (S3Exception e) {
-      throw new vinposException(e.getMessage());
+      throw new VinposException(e.getMessage());
     }
   }
 }

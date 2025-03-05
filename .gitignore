@@ -34,6 +34,7 @@ build/
 
 ### Secret ###
 application*.properties
+application*.yaml
 **/certs
 
 ### Docker ###

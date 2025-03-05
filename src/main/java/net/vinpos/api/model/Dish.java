@@ -2,14 +2,12 @@ package net.vinpos.api.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "dish")
@@ -25,7 +23,7 @@ public class Dish extends BaseModel {
   @Column(name = "price", nullable = false)
   private Double price;
 
-  @Column(name = "description", columnDefinition="TEXT")
+  @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
   @Column(name = "is_shown")

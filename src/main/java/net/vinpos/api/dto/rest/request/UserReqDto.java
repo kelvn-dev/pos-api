@@ -1,9 +1,8 @@
 package net.vinpos.api.dto.rest.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-
 import java.sql.Timestamp;
+import lombok.Data;
 
 @Data
 public class UserReqDto {

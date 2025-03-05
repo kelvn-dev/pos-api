@@ -2,6 +2,10 @@ package net.vinpos.api.service.rest;
 
 import com.cosium.spring.data.jpa.entity.graph.domain2.EntityGraph;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import net.vinpos.api.exception.NotFoundException;
 import net.vinpos.api.model.BaseModel;
@@ -11,13 +15,7 @@ import net.vinpos.api.utils.PredicateUtils;
 import net.vinpos.api.utils.SearchCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

@@ -1,5 +1,8 @@
 package net.vinpos.api.mapping.provider;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.vinpos.api.dto.provider.response.PresignedObjectRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -7,10 +10,6 @@ import org.mapstruct.Named;
 import software.amazon.awssdk.awscore.presigner.PresignedRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Mapper(componentModel = "spring")
 public interface S3Mapper {

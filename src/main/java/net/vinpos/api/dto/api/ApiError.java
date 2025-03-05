@@ -3,17 +3,16 @@ package net.vinpos.api.dto.api;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.validation.ConstraintViolation;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 
 @Getter
 @Setter

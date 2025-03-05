@@ -1,7 +1,6 @@
 package net.vinpos.api.utils;
 
 import com.querydsl.core.types.dsl.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
