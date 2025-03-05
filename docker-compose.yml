@@ -1,0 +1,55 @@
+version: "3.8"
+name: "vinpos"
+services:
+  db:
+    container_name: vinpos-postgresql
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_USER=vinpos
+      - POSTGRES_PASSWORD=vinpos
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./volumes/db:/var/lib/postgresql/data
+    networks:
+      - vinpos-network
+#  redis:
+#    image: redis:6.2-alpine
+#    container_name: vinpos-redis
+#    ports:
+#      - "6379:6379"
+#    # User default
+#    command: redis-server --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+#    volumes:
+#      - ./volumes/cache:/data
+#    networks:
+#      - vinpos-network
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: vinpos-rabbitmq
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    environment:
+#      RABBITMQ_DEFAULT_USER: vinpos
+#      RABBITMQ_DEFAULT_PASS: vinpos
+#    volumes:
+#      - ./volumes/rabbitmq/data/:/var/lib/rabbitmq/
+#      - ./volumes/rabbitmq/log/:/var/log/rabbitmq
+#    networks:
+#      - vinpos-network
+  api:
+    container_name: vinpos-api
+    image: kelvn/vinpos-api:sha-894b834
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - vinpos-network
+    depends_on:
+      - db
+
+networks:
+  vinpos-network: {}
