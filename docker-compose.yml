@@ -38,18 +38,18 @@ services:
 #      - ./volumes/rabbitmq/log/:/var/log/rabbitmq
 #    networks:
 #      - vinpos-network
-#  api:
-#    container_name: vinpos-api
-#    image: kelvn/vinpos-api:sha-894b834
-##    build:
-##      context: .
-##      dockerfile: Dockerfile
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - vinpos-network
-#    depends_on:
-#      - db
+  api:
+    container_name: vinpos-api
+    image: kelvn/vinpos-api:sha-1b558ab
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - vinpos-network
+    depends_on:
+      - db
 
 networks:
   vinpos-network: {}
