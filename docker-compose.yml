@@ -13,17 +13,17 @@ services:
       - ./volumes/db:/var/lib/postgresql/data
     networks:
       - vinpos-network
-#  redis:
-#    image: redis:6.2-alpine
-#    container_name: vinpos-redis
-#    ports:
-#      - "6379:6379"
-#    # User default
-#    command: redis-server --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-#    volumes:
-#      - ./volumes/cache:/data
-#    networks:
-#      - vinpos-network
+  redis:
+    image: redis:6.2-alpine
+    container_name: vinpos-redis
+    ports:
+      - "6379:6379"
+    # User default
+    command: redis-server --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - ./volumes/cache:/data
+    networks:
+      - vinpos-network
 #  rabbitmq:
 #    image: rabbitmq:3-management
 #    container_name: vinpos-rabbitmq

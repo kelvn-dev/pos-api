@@ -1,6 +1,7 @@
 package net.vinpos.api.dto.rest.response;
 
-import java.sql.Timestamp;
+import com.auth0.json.mgmt.permissions.Permission;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -10,9 +11,5 @@ public class UserResDto {
   private String email;
   private String avatar;
   private String languageCode;
-
-  private String memberShip;
-  private int quantityQrLeft;
-  private int storedQrQuantity;
-  private Timestamp membershipExpiryDate;
+  private List<Permission> permissions;
 }
