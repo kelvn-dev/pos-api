@@ -26,6 +26,9 @@ public class Dish extends BaseModel {
   @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
+  @Column(name = "image")
+  private String image;
+
   @Column(name = "is_shown")
   private Boolean isShown;
 
