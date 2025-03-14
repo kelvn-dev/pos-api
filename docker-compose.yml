@@ -63,6 +63,16 @@ services:
       - './volumes/loki:/loki'
     environment:
       - GF_PATHS_DATA=/data/grafana
+  nginx-waf:
+    image: owasp/modsecurity-crs:nginx
+    container_name: vinpos-nginx-waf
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./modsec/modsecurity.conf:/etc/modsecurity/modsecurity.conf:ro
+    ports:
+      - "80:80"
+    networks:
+      - vinpos-network
 
 
 networks:

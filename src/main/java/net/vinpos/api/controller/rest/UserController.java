@@ -1,6 +1,7 @@
 package net.vinpos.api.controller.rest;
 
 import com.auth0.json.mgmt.permissions.Permission;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/users")
 @RequiredArgsConstructor
+@Hidden
 public class UserController implements SecuredRestController {
 
   private final UserService userService;

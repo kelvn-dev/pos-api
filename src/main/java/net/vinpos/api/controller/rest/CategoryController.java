@@ -1,5 +1,6 @@
 package net.vinpos.api.controller.rest;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/categories")
 @RequiredArgsConstructor
+@Hidden
 public class CategoryController implements SecuredRestController {
 
   private final CategoryService categoryService;
