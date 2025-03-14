@@ -5,20 +5,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.vinpos.api.exception.UnauthorizedException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Tag(name = "Inferential (Blind) SQLi")
 @RestController
 @RequiredArgsConstructor
-public class InferentialSQLiController {
+public class OutOfBandSQLiController {
 
   @PersistenceContext private final EntityManager entityManager;
 
