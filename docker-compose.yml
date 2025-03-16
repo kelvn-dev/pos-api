@@ -38,41 +38,44 @@ services:
 #      - ./volumes/rabbitmq/log/:/var/log/rabbitmq
 #    networks:
 #      - vinpos-network
-#  api:
-#    container_name: vinpos-api
-#    image: kelvn/vinpos-api:sha-1b558ab
-##    build:
-##      context: .
-##      dockerfile: Dockerfile
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - vinpos-network
-#    depends_on:
-#      - db
-  grafana:
-    container_name: vinpos-lgtm
-    image: 'docker.io/grafana/otel-lgtm:latest'
+  api:
+    container_name: vinpos-api
+    image: kelvn/vinpos-api:sha-1964028
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
     ports:
-      - '3000:3000'
-      - '4317:4317'
-      - '4318:4318'
-    volumes:
-      - './volumes/grafana:/data/grafana'
-      - './volumes/prometheus:/data/prometheus'
-      - './volumes/loki:/loki'
-    environment:
-      - GF_PATHS_DATA=/data/grafana
-  nginx-waf:
-    image: owasp/modsecurity-crs:nginx
-    container_name: vinpos-nginx-waf
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./modsec/modsecurity.conf:/etc/modsecurity/modsecurity.conf:ro
-    ports:
-      - "80:80"
+      - "8080:8080"
     networks:
       - vinpos-network
+    depends_on:
+      - db
+#  grafana:
+#    container_name: vinpos-lgtm
+#    image: 'docker.io/grafana/otel-lgtm:latest'
+#    ports:
+#      - '3000:3000'
+#      - '4317:4317'
+#      - '4318:4318'
+#    volumes:
+#      - './volumes/grafana:/data/grafana'
+#      - './volumes/prometheus:/data/prometheus'
+#      - './volumes/loki:/loki'
+#    environment:
+#      - GF_PATHS_DATA=/data/grafana
+  nginx:
+    image: owasp/modsecurity-crs:4.11.0-nginx-alpine-202502070602
+    container_name: nginx-waf
+    volumes:
+      - ./templates/conf.d/default.conf:/etc/nginx/templates/conf.d/default.conf
+      - ./templates/includes/:/etc/nginx/templates/conf.d/
+      - ./modsecurity/recommended-modsecurity.conf:/etc/modsecurity.d/owasp-crs/rules/recommended-modsecurity.conf
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - vinpos-network
+    depends_on: api
 
 
 networks:
