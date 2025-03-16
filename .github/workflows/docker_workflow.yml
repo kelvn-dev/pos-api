@@ -26,7 +26,7 @@ jobs:
         env:
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
         run: |
-          aws s3 cp s3://$S3_BUCKET_NAME/config/application.properties src/main/resources/application.yaml
+          aws s3 cp s3://$S3_BUCKET_NAME/config/application.yaml src/main/resources/application.yaml
 
       - name: Extract Metadata
         uses: docker/metadata-action@v5
