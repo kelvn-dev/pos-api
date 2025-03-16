@@ -1,6 +1,5 @@
 package net.vinpos.api.sqli;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityManager;
@@ -29,7 +28,9 @@ public class InBandSQLiController {
    * @return
    */
   @PostMapping("/vulnerable/v1/accounts/sign-in")
-  @Operation(summary = "Error-based SQL Injection", description = "Input this to param password for bypass authentication: admin' OR '1'='1'")
+  @Operation(
+      summary = "Error-based SQL Injection",
+      description = "Input this to param password for bypass authentication: admin' OR '1'='1'")
   public ResponseEntity<?> vulnerableSignIn(@Valid @RequestBody AccountDto dto) {
     String sql =
         String.format(
@@ -70,11 +71,15 @@ public class InBandSQLiController {
 
   /**
    * Union-based SQL Injection
+   *
    * @param author
    * @return
    */
   @GetMapping("/vulnerable/v1/books")
-  @Operation(summary = "Union-based SQL Injection", description = "Input this to param author for account retrieval: admin' UNION SELECT * FROM account --")
+  @Operation(
+      summary = "Union-based SQL Injection",
+      description =
+          "Input this to param author for account retrieval: admin' UNION SELECT * FROM account --")
   public ResponseEntity<?> vulnerableGetBooks(@RequestParam String author) {
     String sql = String.format("SELECT * FROM book where author = '%s'", author);
     Query query = entityManager.createNativeQuery(sql, Book.class);
