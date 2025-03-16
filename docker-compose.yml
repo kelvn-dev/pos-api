@@ -55,7 +55,7 @@ services:
       - vinpos-network
   api:
     container_name: vinpos-api
-    image: kelvn/vinpos-api:sha-58f587e
+    image: kelvn/vinpos-api:sha-e73cb5f
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
