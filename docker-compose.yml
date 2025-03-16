@@ -55,7 +55,7 @@ services:
       - vinpos-network
   api:
     container_name: vinpos-api
-    image: kelvn/vinpos-api:sha-e73cb5f
+    image: kelvn/vinpos-api:sha-4577936
 #    build:
 #      context: .
 #      dockerfile: Dockerfile
@@ -68,12 +68,11 @@ services:
       - redis
       - grafana
   nginx:
-    image: owasp/modsecurity-crs:4.11.0-nginx-alpine-202502070602
-    container_name: nginx-waf
-    volumes:
-      - ./templates/conf.d/default.conf:/etc/nginx/templates/conf.d/default.conf
-      - ./templates/includes/:/etc/nginx/templates/conf.d/
-      - ./modsecurity/modsecurity.conf:/etc/modsecurity.d/owasp-crs/rules/modsecurity.conf
+    image: owasp/modsecurity-crs:3.3.4-nginx-alpine-202304160904
+    container_name: vinpos-nginx-waf
+    user: root
+    environment:
+      - BACKEND=http://api:8080
     ports:
       - 80:80
       - 443:443
