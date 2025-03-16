@@ -30,7 +30,7 @@ public class InBandSQLiController {
   @PostMapping("/vulnerable/v1/accounts/sign-in")
   @Operation(
       summary = "Error-based SQL Injection",
-      description = "Input this to param password for bypass authentication: admin' OR '1'='1'")
+      description = "Input this to param password for bypass authentication: admin' OR '1'='1")
   public ResponseEntity<?> vulnerableSignIn(@Valid @RequestBody AccountDto dto) {
     String sql =
         String.format(
