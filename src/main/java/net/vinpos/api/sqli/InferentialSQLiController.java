@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Inferential (Blind) SQLi")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/sqli")
 public class InferentialSQLiController {
 
   @PersistenceContext private final EntityManager entityManager;

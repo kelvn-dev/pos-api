@@ -36,6 +36,7 @@ public class SecurityConfig {
     "/swagger-ui/**",
     "/v3/api-docs",
     "/v3/api-docs/**",
+    "/sqli/**",
     "/stomp/**" // To allow the initial HTTP call to stomp handshake endpoint
   };
 

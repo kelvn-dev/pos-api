@@ -55,10 +55,10 @@ services:
       - vinpos-network
   api:
     container_name: vinpos-api
-    #    image: kelvn/vinpos-api:sha-8a40eb4
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: kelvn/vinpos-api:sha-54d0292
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     networks:

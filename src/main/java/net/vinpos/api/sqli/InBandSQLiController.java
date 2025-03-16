@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "In-band SQLi")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/sqli")
 public class InBandSQLiController {
 
   @PersistenceContext private final EntityManager entityManager;
