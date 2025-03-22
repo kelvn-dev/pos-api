@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.vinpos.api.enums.OrderStatus;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
@@ -17,9 +18,18 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicUpdate
 public class Order extends BaseModel {
 
-  @Column(name = "number")
-  private Integer number;
+  @Column(name = "session_id", unique = true, updatable = false)
+  private String sessionId;
 
-  @OneToMany(fetch = FetchType.EAGER)
+  @Column(name = "table_number")
+  private Integer tableNumber;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status")
+  private OrderStatus status;
+
+  @OneToMany(
+      fetch = FetchType.EAGER,
+      cascade = {CascadeType.MERGE, CascadeType.REMOVE})
   private Set<OrderItem> orderItems;
 }

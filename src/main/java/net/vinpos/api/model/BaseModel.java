@@ -3,7 +3,6 @@ package net.vinpos.api.model;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,7 +56,7 @@ public abstract class BaseModel implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return (id != null) ? id.hashCode() : System.identityHashCode(this);
   }
 
   @PrePersist
