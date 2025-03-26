@@ -55,7 +55,7 @@ public class UserService {
 
   public User getProfile(JwtAuthenticationToken jwtToken) {
     String userId = jwtToken.getToken().getSubject();
-    User user = this.getById(userId, true);
+    User user = this.getById(userId, false);
     if (Objects.isNull(user)) {
       com.auth0.json.mgmt.users.User auth0User = auth0Service.getUserById(userId);
       user = userMapper.auth02Model(auth0User);

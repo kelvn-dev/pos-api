@@ -38,4 +38,8 @@ public class DishService extends BaseService<Dish, DishRepository> {
     dishMapper.updateModelFromDto(dto, dish);
     return repository.save(dish);
   }
+
+  public List<Dish> getAllById(List<UUID> uuids) {
+    return repository.findAllById(uuids);
+  }
 }

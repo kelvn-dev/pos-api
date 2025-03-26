@@ -38,18 +38,32 @@ services:
   #      - ./volumes/rabbitmq/log/:/var/log/rabbitmq
   #    networks:
   #      - vinpos-network
-  api:
-    container_name: vinpos-api
-    image: kelvn/vinpos-api:sha-2b239d6
-    #    build:
-    #      context: .
-    #      dockerfile: Dockerfile
+  #  api:
+  #    container_name: vinpos-api
+  #    image: kelvn/vinpos-api:sha-1b558ab
+  ##    build:
+  ##      context: .
+  ##      dockerfile: Dockerfile
+  #    ports:
+  #      - "8080:8080"
+  #    networks:
+  #      - vinpos-network
+  #    depends_on:
+  #      - db
+  grafana:
+    container_name: vinpos-lgtm
+    image: 'docker.io/grafana/otel-lgtm:latest'
     ports:
-      - "8080:8080"
-    networks:
-      - vinpos-network
-    depends_on:
-      - db
+      - '3000:3000'
+      - '4317:4317'
+      - '4318:4318'
+    volumes:
+      - './volumes/grafana:/data/grafana'
+      - './volumes/prometheus:/data/prometheus'
+      - './volumes/loki:/loki'
+    environment:
+      - GF_PATHS_DATA=/data/grafana
+
 
 networks:
   vinpos-network: {}
