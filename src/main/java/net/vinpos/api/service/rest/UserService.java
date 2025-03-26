@@ -55,7 +55,13 @@ public class UserService {
 
   public User getProfile(JwtAuthenticationToken jwtToken) {
     String userId = jwtToken.getToken().getSubject();
-    return this.getById(userId, false);
+    User user = this.getById(userId, true);
+    if (Objects.isNull(user)) {
+      com.auth0.json.mgmt.users.User auth0User = auth0Service.getUserById(userId);
+      user = userMapper.auth02Model(auth0User);
+      user = repository.save(user);
+    }
+    return user;
   }
 
   public User updateByToken(JwtAuthenticationToken jwtToken, ProfileReqDto dto) {
