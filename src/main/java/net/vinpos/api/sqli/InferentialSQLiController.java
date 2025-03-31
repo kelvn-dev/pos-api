@@ -27,17 +27,7 @@ public class InferentialSQLiController {
   @GetMapping("/vulnerable/boolean-based/books")
   @Operation(
       summary = "Boolean-based SQL injection",
-      description =
-          ""
-              + "Input these to param author: admin' OR '1'='1' + admin' OR '1'='0'. "
-              + "If the application behaves differently in each case, it is susceptible to boolean-based blind. "
-              + "Iterate this to discover the full name of the first table in the database structure: admin' AND (\n"
-              + "  SELECT substring(table_name FROM 2 FOR 1)\n"
-              + "  FROM information_schema.tables\n"
-              + "  WHERE table_schema = 'public'\n"
-              + "  ORDER BY table_name\n"
-              + "  LIMIT 1\n"
-              + ") = 'c' --")
+      description = "Input this to param: ' OR '1'='1")
   public ResponseEntity<?> vulnerableBooleanBasedGetBook(@RequestParam String author) {
     String sql = String.format("SELECT * FROM book where author = '%s'", author);
     Query query = entityManager.createNativeQuery(sql, Book.class);
@@ -45,18 +35,17 @@ public class InferentialSQLiController {
     return ResponseEntity.ok(books);
   }
 
-  //  /**
-  //   * Time-based SQL Injection
-  //   * @param author
-  //   * @return
-  //   */
-  //  @GetMapping("/vulnerable/time-based/books")
-  //  @Operation(summary = "Time-based SQL injection", description = "Input this to param author for
-  // account retrieval: admin' UNION SELECT * FROM account --")
-  //  public ResponseEntity<?> vulnerableTimeBasedGetBook(@RequestParam String author) {
-  //    String sql = String.format("SELECT * FROM book where author = '%s'", author);
-  //    Query query = entityManager.createNativeQuery(sql, Book.class);
-  //    List<Book> books = query.getResultList();
-  //    return ResponseEntity.ok(books);
-  //  }
+  /**
+   * Time-based SQL Injection
+   * @param author
+   * @return
+   */
+  @GetMapping("/vulnerable/time-based/books")
+  @Operation(summary = "Time-based SQL injection", description = "Input this to param: ' OR EXISTS(SELECT 1 FROM pg_sleep(5))--")
+  public ResponseEntity<?> vulnerableTimeBasedGetBook(@RequestParam String author) {
+    String sql = String.format("SELECT * FROM book where author = '%s'", author);
+    Query query = entityManager.createNativeQuery(sql, Book.class);
+    List<Book> books = query.getResultList();
+    return ResponseEntity.ok(books);
+  }
 }
