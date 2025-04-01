@@ -37,11 +37,14 @@ public class InferentialSQLiController {
 
   /**
    * Time-based SQL Injection
+   *
    * @param author
    * @return
    */
   @GetMapping("/vulnerable/time-based/books")
-  @Operation(summary = "Time-based SQL injection", description = "Input this to param: ' OR EXISTS(SELECT 1 FROM pg_sleep(5))--")
+  @Operation(
+      summary = "Time-based SQL injection",
+      description = "Input this to param: ' OR EXISTS(SELECT 1 FROM pg_sleep(5))--")
   public ResponseEntity<?> vulnerableTimeBasedGetBook(@RequestParam String author) {
     String sql = String.format("SELECT * FROM book where author = '%s'", author);
     Query query = entityManager.createNativeQuery(sql, Book.class);
