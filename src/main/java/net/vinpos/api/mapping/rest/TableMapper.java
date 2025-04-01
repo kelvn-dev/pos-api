@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 public interface TableMapper {
   TableEntity dto2Model(TableReqDto dto);
 
+  @Mapping(source = "floor.name", target = "floorName")
   TableResDto model2Dto(TableEntity table);
 
   void updateModelFromDto(TableReqDto dto, @MappingTarget TableEntity table);
