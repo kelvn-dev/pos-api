@@ -3,7 +3,7 @@ name: "vinpos"
 services:
   db:
     container_name: vinpos-postgresql
-    image: postgres:14.1-alpine
+    image: postgres:14.17
     environment:
       - POSTGRES_USER=vinpos
       - POSTGRES_PASSWORD=vinpos
