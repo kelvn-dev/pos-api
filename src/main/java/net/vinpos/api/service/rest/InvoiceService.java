@@ -2,7 +2,6 @@ package net.vinpos.api.service.rest;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -33,28 +32,33 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
   @PersistenceContext private final EntityManager entityManager;
 
   public InvoiceService(
-          InvoiceRepository repository,
-          InvoiceMapper invoiceMapper,
-          OrderService orderService, UserService userService,
-          EntityManager entityManager) {
+      InvoiceRepository repository,
+      InvoiceMapper invoiceMapper,
+      OrderService orderService,
+      UserService userService,
+      EntityManager entityManager) {
     super(repository);
     this.invoiceMapper = invoiceMapper;
     this.orderService = orderService;
-      this.userService = userService;
-      this.entityManager = entityManager;
+    this.userService = userService;
+    this.entityManager = entityManager;
   }
 
   @Transactional
   public InvoiceResDto createInvoice(InvoiceReqDto dto) {
     Order order = orderService.getById(dto.getOrderId(), false);
 
-    if (!order.getStatus().equals(OrderStatus.READY_TO_DELIVER) && !order.getStatus().equals(OrderStatus.DELIVERED)) {
+    if (!order.getStatus().equals(OrderStatus.READY_TO_DELIVER)
+        && !order.getStatus().equals(OrderStatus.DELIVERED)) {
       throw new BadRequestException("Order is not in a valid state for invoicing");
     }
 
-    BigDecimal totalAmount = order.getOrderItems().stream()
-            .map(item -> BigDecimal.valueOf(item.getDishPrice())
-                    .multiply(BigDecimal.valueOf(item.getQuantity())))
+    BigDecimal totalAmount =
+        order.getOrderItems().stream()
+            .map(
+                item ->
+                    BigDecimal.valueOf(item.getDishPrice())
+                        .multiply(BigDecimal.valueOf(item.getQuantity())))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     BigDecimal changeAmount = BigDecimal.ZERO;
@@ -67,11 +71,13 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
     }
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    User cashier = (authentication instanceof JwtAuthenticationToken token)
+    User cashier =
+        (authentication instanceof JwtAuthenticationToken token)
             ? userService.getByToken(token, false)
             : new User();
 
-    Invoice invoice = Invoice.builder()
+    Invoice invoice =
+        Invoice.builder()
             .order(order)
             .invoiceCode(generateInvoiceCode(order.getId()))
             .total(totalAmount)
@@ -107,6 +113,7 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
     String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     SecureRandom random = new SecureRandom();
     int randomInt = random.nextInt(999999);
-    return String.format("%s-%s-%s-%06d", prefix, timestamp, invoiceId.toString().substring(0, 8), randomInt);
+    return String.format(
+        "%s-%s-%s-%06d", prefix, timestamp, invoiceId.toString().substring(0, 8), randomInt);
   }
 }

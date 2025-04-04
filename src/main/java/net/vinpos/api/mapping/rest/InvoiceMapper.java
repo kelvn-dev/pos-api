@@ -34,13 +34,15 @@ public interface InvoiceMapper {
 
   default Order map(UUID orderId, OrderRepository orderRepository) {
     if (orderId == null) return null;
-    return orderRepository.findById(orderId)
-            .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
+    return orderRepository
+        .findById(orderId)
+        .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
   }
 
   default User map(UUID userId, UserRepository userRepository) {
     if (userId == null) return null;
-    return userRepository.findById(String.valueOf(userId))
-            .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+    return userRepository
+        .findById(String.valueOf(userId))
+        .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
   }
 }

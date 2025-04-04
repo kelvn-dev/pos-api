@@ -8,11 +8,9 @@ import net.vinpos.api.enums.PaymentMethod;
 
 @Data
 public class InvoiceReqDto {
-  @NotNull(message = "Order id is required")
-  private UUID orderId;
+  @NotNull(message = "Order id is required") private UUID orderId;
 
-  @NotNull(message = "Payment method is required")
-  private PaymentMethod paymentMethod;
+  @NotNull(message = "Payment method is required") private PaymentMethod paymentMethod;
 
   private BigDecimal amountGiven;
 }
