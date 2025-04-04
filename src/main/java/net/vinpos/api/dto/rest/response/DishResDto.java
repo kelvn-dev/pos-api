@@ -10,4 +10,5 @@ public class DishResDto {
   private Double price;
   private String description;
   private Boolean isShown;
+  private String image;
 }

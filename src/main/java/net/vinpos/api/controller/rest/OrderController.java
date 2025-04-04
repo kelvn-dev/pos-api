@@ -8,6 +8,10 @@ import net.vinpos.api.enums.OrderStatus;
 import net.vinpos.api.mapping.rest.OrderMapper;
 import net.vinpos.api.model.Order;
 import net.vinpos.api.service.rest.OrderService;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,8 +53,13 @@ public class OrderController implements SecuredRestController {
   }
 
   @GetMapping
-  public ResponseEntity<?> getBySessionId(@RequestParam(name = "session-id") String sessionId) {
-    List<Order> orders = orderService.getBySessionId(sessionId);
-    return ResponseEntity.ok(orderMapper.model2Dto(orders));
+  public ResponseEntity<?> getList(
+      @PageableDefault(
+              sort = {"createdAt"},
+              direction = Sort.Direction.DESC)
+          @ParameterObject
+          Pageable pageable,
+      @RequestParam(required = false, defaultValue = "") List<String> filter) {
+    return ResponseEntity.ok(orderMapper.model2Dto(orderService.getList(filter, pageable)));
   }
 }
