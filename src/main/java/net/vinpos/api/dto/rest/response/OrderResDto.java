@@ -11,4 +11,5 @@ public class OrderResDto {
   private Integer tableNumber;
   private Set<OrderItemResDto> orderItems;
   private OrderStatus status;
+  private String createdAt;
 }

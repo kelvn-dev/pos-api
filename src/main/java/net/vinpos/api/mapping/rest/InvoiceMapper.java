@@ -19,7 +19,7 @@ public interface InvoiceMapper {
   Invoice dto2Model(InvoiceReqDto dto);
 
   @Mapping(source = "cashier.nickname", target = "cashierName")
-  @Mapping(source = "createdAt", target = "createdAt", dateFormat = "yyyy-MM-dd'T'HH:mm:ss")
+  @Mapping(target = "createdAt", expression = "java(formatTimestamp(invoice.getCreatedAt()))")
   InvoiceResDto model2Dto(Invoice invoice);
 
   void updateModelFromDto(InvoiceReqDto dto, @MappingTarget Invoice dish);
@@ -42,5 +42,13 @@ public interface InvoiceMapper {
     if (userId == null) return null;
     return userRepository.findById(String.valueOf(userId))
             .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+  }
+
+  // Hàm hỗ trợ định dạng timestamp
+  default String formatTimestamp(long epochSeconds) {
+    return java.time.format.DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy")
+            .format(java.time.Instant.ofEpochSecond(epochSeconds)
+                    .atZone(java.time.ZoneId.systemDefault())
+                    .toLocalDateTime());
   }
 }

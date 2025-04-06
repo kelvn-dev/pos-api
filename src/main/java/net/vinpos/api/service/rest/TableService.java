@@ -37,11 +37,13 @@ public class TableService extends BaseService<TableEntity, TableRepository> {
 
   public TableEntity updateById(UUID id, TableReqDto dto) {
     TableEntity table = this.getById(id, false);
+
     if (!table.getNumber().equals(dto.getNumber())) {
       if (repository.findByNumber(dto.getNumber()).isPresent()) {
         throw new ConflictException(modelClass, "number", dto.getNumber().toString());
       }
     }
+
     tableMapper.updateModelFromDto(dto, table);
     return repository.save(table);
   }
