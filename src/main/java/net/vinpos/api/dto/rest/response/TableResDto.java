@@ -1,10 +1,8 @@
 package net.vinpos.api.dto.rest.response;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 import lombok.Data;
 import net.vinpos.api.enums.TableStatus;
-
-import java.util.UUID;
 
 @Data
 public class TableResDto {

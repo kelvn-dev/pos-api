@@ -2,7 +2,6 @@ package net.vinpos.api.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-
 import lombok.*;
 import net.vinpos.api.enums.PaymentMethod;
 import org.hibernate.annotations.DynamicUpdate;
