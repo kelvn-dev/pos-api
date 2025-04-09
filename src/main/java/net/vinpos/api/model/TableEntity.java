@@ -25,6 +25,9 @@ public class TableEntity extends BaseModel {
   @Enumerated(EnumType.STRING)
   private TableStatus status;
 
+  @Column(name = "opened_at")
+  private Long openedAt;
+
   @ManyToOne
   @JoinColumn(name = "floor_id", nullable = false, referencedColumnName = "id")
   private Floor floor;

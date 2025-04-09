@@ -29,18 +29,20 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
   private final InvoiceMapper invoiceMapper;
   private final OrderService orderService;
   private final UserService userService;
+  private final TableService tableService;
   @PersistenceContext private final EntityManager entityManager;
 
   public InvoiceService(
-      InvoiceRepository repository,
-      InvoiceMapper invoiceMapper,
-      OrderService orderService,
-      UserService userService,
-      EntityManager entityManager) {
+          InvoiceRepository repository,
+          InvoiceMapper invoiceMapper,
+          OrderService orderService,
+          UserService userService, TableService tableService,
+          EntityManager entityManager) {
     super(repository);
     this.invoiceMapper = invoiceMapper;
     this.orderService = orderService;
     this.userService = userService;
+    this.tableService = tableService;
     this.entityManager = entityManager;
   }
 
