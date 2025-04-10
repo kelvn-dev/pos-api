@@ -59,6 +59,8 @@ jobs:
           sudo dpkg -i cloudflared.deb
 
       - name: Setup SSH Config
+        env:
+          CF_SERVICE_TOKEN: ${{ secrets.CF_SERVICE_TOKEN }}
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
@@ -66,7 +68,7 @@ jobs:
           
           # Setup SSH config for Cloudflare
           echo "Host ${{ secrets.SERVER_HOSTNAME }}
-            ProxyCommand cloudflared access ssh --hostname %h
+            ProxyCommand cloudflared access ssh --hostname %h --service-token ${CF_SERVICE_TOKEN}
             IdentityFile ~/.ssh/deploy_key
             User ${{ secrets.SERVER_USER }}
             StrictHostKeyChecking no" > ~/.ssh/config
