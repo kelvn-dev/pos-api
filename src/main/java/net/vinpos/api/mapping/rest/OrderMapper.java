@@ -30,8 +30,9 @@ public interface OrderMapper {
   // Hàm hỗ trợ định dạng timestamp
   default String formatTimestamp(long epochSeconds) {
     return java.time.format.DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy")
-            .format(java.time.Instant.ofEpochSecond(epochSeconds)
-                    .atZone(java.time.ZoneId.systemDefault())
-                    .toLocalDateTime());
+        .format(
+            java.time.Instant.ofEpochSecond(epochSeconds)
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDateTime());
   }
 }

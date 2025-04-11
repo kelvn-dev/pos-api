@@ -12,15 +12,9 @@ jobs:
   ci:
     name: Build Docker Image To Dockerhub
     runs-on: [ubuntu-latest]
-    outputs:
-      image_tag: sha-${{ steps.sha.outputs.short }}
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
-      
-      - name: Get short SHA
-        id: sha
-        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -56,33 +50,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  cd:
-    needs: ci
-    runs-on: ubuntu-latest  
-    steps:
-      - name: Install Cloudflared
-        run: |
-          curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-          sudo dpkg -i cloudflared.deb
-          rm cloudflared.deb
-
-      - name: Create SSH key
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_ssh_key
-          chmod 600 ~/.ssh/deploy_ssh_key
-
-      - name: Deploy to remote server
-        run: |
-          echo "Using image: ${IMAGE_TAG}"
-          ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
-              -o IdentitiesOnly=yes \
-              -o ProxyCommand='cloudflared access ssh --hostname %h' \
-              ${{secrets.SERVER_USER}}@${{secrets.SERVER_SSH_HOST}} "
-            mkdir -p ~/.docker && echo '{\"credsStore\":\"\"}' > ~/.docker/config.json && \
-            cd ~/vinpos && \
-            pwd && \
-            ls -a && \
-            sed -i '' \"s|image: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:.*|image: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:${{needs.ci.outputs.image_tag}}|\" docker-compose.yml && \
-            DOCKER_CONFIG=~/.docker /usr/local/bin/docker compose up -d
-          "
