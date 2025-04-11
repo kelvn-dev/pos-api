@@ -14,6 +14,10 @@ on:
           - full
           - build-only
           - deploy-only
+      image_tag:
+        description: 'Image tag to deploy (required for deploy-only)'
+        required: false
+        type: string
 
 env:
   IMAGE_NAME: "vinpos-api"
@@ -72,6 +76,14 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     steps:
+      - name: Set image tag
+        run: |
+          if [ "${{ inputs.run_type }}" == "deploy-only" ]; then
+            echo "IMAGE_TAG=${{ inputs.image_tag }}" >> $GITHUB_ENV
+          else
+            echo "IMAGE_TAG=${{ needs.ci.outputs.image_tag }}" >> $GITHUB_ENV
+          fi
+
       - name: Install Cloudflared
         run: |
           curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
@@ -86,17 +98,15 @@ jobs:
 
       - name: Deploy to remote server
         run: |
-          IMAGE_TAG="${{ needs.ci.outputs.image_tag }}"
           echo "Using image: ${IMAGE_TAG}"
           ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
               -o IdentitiesOnly=yes \
               -o ProxyCommand='cloudflared access ssh --hostname %h' \
               ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}} "
-            source ~/.zshrc && \
+            mkdir -p ~/.docker && echo '{\"credsStore\":\"\"}' > ~/.docker/config.json && \
             cd ~/vinpos && \
             pwd && \
             ls -a && \
             sed -i '' \"s|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|\" docker-compose.yml && \
-            /usr/local/bin/docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} && \
-            /usr/local/bin/docker compose up -d
+            DOCKER_CONFIG=~/.docker /usr/local/bin/docker compose up -d
           "
