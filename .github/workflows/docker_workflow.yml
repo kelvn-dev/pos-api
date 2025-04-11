@@ -97,5 +97,5 @@ jobs:
             pwd && \
             ls -la && \
             sed -i '' \"s|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|\" docker-compose.yml && \
-            docker compose up -d
+            /usr/local/bin/docker compose up -d
           "
