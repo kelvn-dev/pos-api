@@ -77,16 +77,13 @@ jobs:
           echo "Using image: ${IMAGE_TAG}"
           ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
               -o ProxyCommand='cloudflared access ssh --hostname %h' \
-              ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}} << 'ENDSSH'
-            
-            cd ~/vinpos
+              ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}}
+            "cd ~/vinpos
             # Update the image tag in docker-compose.yml
-            sed -i '' 's|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|' docker-compose.yml
+            && sed -i '' 's|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|' docker-compose.yml
             
             # Restart the services
-            docker-compose pull api
-            docker-compose up -d
+            && docker-compose up -d
             
             # Clean up old images
-            docker image prune -f     
-ENDSSH
+            && docker image prune -f"
