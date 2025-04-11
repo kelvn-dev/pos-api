@@ -92,6 +92,7 @@ jobs:
               -o IdentitiesOnly=yes \
               -o ProxyCommand='cloudflared access ssh --hostname %h' \
               ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}} "
+            source ~/.zshrc && \
             cd ~/vinpos && \
             pwd && \
             ls -la && \
