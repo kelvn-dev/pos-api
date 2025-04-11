@@ -3,12 +3,13 @@ name: Build And Push Images to Dockerhub
 on:
   push:
     branches: [ "main", "dev" ]
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: "vinpos-api"
 
 jobs:
-  build_docker_images:
+  ci:
     name: Build Docker Image To Dockerhub
     runs-on: [ubuntu-latest]
     steps:

@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
 // Swagger-ui endpoint: http://localhost:8080/swagger-ui/index.html#
- @Configuration
+@Configuration
 @OpenAPIDefinition(
     info =
         @Info(
