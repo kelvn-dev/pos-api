@@ -24,7 +24,7 @@ env:
 
 jobs:
   ci:
-    if: inputs.run_type != 'deploy-only'
+    if: github.event.inputs.run_type != 'deploy-only'
     name: Build Docker Image To Dockerhub
     runs-on: [ubuntu-latest]
     outputs:
@@ -72,7 +72,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   cd:
-    if: inputs.run_type != 'build-only'
+    if: github.event.inputs.run_type != 'build-only'
     needs: ci
     runs-on: ubuntu-latest
     steps:
