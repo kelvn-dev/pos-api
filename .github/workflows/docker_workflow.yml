@@ -11,6 +11,8 @@ jobs:
   build_docker_images:
     name: Build Docker Image To Dockerhub
     runs-on: [ubuntu-latest]
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
@@ -67,12 +69,12 @@ jobs:
 
       - name: Deploy to remote server
         run: |
-          NEW_TAG="sha-$(git rev-parse --short HEAD)"
+          echo "Using image tag: ${{ needs.build_docker_images.outputs.image_tag }}"
           ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
               -o ProxyCommand='cloudflared access ssh --hostname %h' \
               vinbrain@api.meikocn.com << EOF
             # Update the image tag in docker-compose.yml
-            sed -i '' 's|image: kelvn/vinpos-api:.*|image: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:${NEW_TAG}|' docker-compose.yml
+            sed -i '' 's|image: kelvn/vinpos-api:.*|image: ${{ needs.build_docker_images.outputs.image_tag }}|' docker-compose.yml
             
             # Restart the services
             cd ~/vinpos
