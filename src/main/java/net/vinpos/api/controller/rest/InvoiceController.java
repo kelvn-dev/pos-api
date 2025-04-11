@@ -26,7 +26,7 @@ public class InvoiceController implements SecuredRestController {
   private final OrderService orderService;
   private final InvoiceMapper invoiceMapper;
 
-  @PostMapping("/")
+  @PostMapping
   @PreAuthorize("hasAuthority('write:invoices')")
   public ResponseEntity<?> createInvoice(@RequestBody @Valid InvoiceReqDto invoiceReqDto) {
     InvoiceResDto response = invoiceService.createInvoice(invoiceReqDto);
