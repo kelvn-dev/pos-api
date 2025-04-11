@@ -12,7 +12,6 @@ on:
         type: choice
         options:
           - full
-          - build-only
           - deploy-only
       image_tag:
         description: 'Image tag to deploy (required for deploy-only)'
@@ -72,14 +71,15 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   cd:
-    if: github.event.inputs.run_type != 'build-only'
-    needs: ci
+    if: |
+      success() ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.run_type == 'deploy-only')
     runs-on: ubuntu-latest
     steps:
       - name: Set image tag
         run: |
-          if [ "${{ inputs.run_type }}" == "deploy-only" ]; then
-            echo "IMAGE_TAG=${{ inputs.image_tag }}" >> $GITHUB_ENV
+          if [ "${{ github.event.inputs.run_type }}" == "deploy-only" ]; then
+            echo "IMAGE_TAG=${{ github.eventinputs.image_tag }}" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=${{ needs.ci.outputs.image_tag }}" >> $GITHUB_ENV
           fi
