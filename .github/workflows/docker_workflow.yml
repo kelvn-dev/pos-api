@@ -3,12 +3,24 @@ name: Build And Push Images to Dockerhub
 on:
   push:
     branches: [ "main", "dev" ]
+  workflow_dispatch:
+    inputs:
+      run_type:
+        description: 'What to run'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - build-only
+          - deploy-only
 
 env:
   IMAGE_NAME: "vinpos-api"
 
 jobs:
-  build_docker_images:
+  ci:
+    if: inputs.run_type != 'deploy-only'
     name: Build Docker Image To Dockerhub
     runs-on: [ubuntu-latest]
     outputs:
@@ -55,8 +67,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-  deploy:
-    needs: build_docker_images
+  cd:
+    if: inputs.run_type != 'build-only'
+    needs: ci
     runs-on: ubuntu-latest
     steps:
       - name: Install Cloudflared
@@ -73,17 +86,15 @@ jobs:
 
       - name: Deploy to remote server
         run: |
-          IMAGE_TAG="${{ needs.build_docker_images.outputs.image_tag }}"
+          IMAGE_TAG="${{ needs.ci.outputs.image_tag }}"
           echo "Using image: ${IMAGE_TAG}"
           ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
+              -o IdentitiesOnly=yes \
               -o ProxyCommand='cloudflared access ssh --hostname %h' \
-              ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}}
-            "cd ~/vinpos
-            # Update the image tag in docker-compose.yml
-            && pwd
-            && ls -la
-            && sed -i '' 's|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|' docker-compose.yml
-            
-            # Restart the services
-            && docker compose up -d
-            && exit 0"
+              ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}} "
+            cd ~/vinpos && \
+            pwd && \
+            ls -la && \
+            sed -i '' \"s|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|\" docker-compose.yml && \
+            docker compose up -d
+          "
