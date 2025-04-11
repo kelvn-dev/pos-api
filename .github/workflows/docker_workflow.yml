@@ -80,6 +80,8 @@ jobs:
               ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}}
             "cd ~/vinpos
             # Update the image tag in docker-compose.yml
+            && pwd
+            && ls -la
             && sed -i '' 's|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|' docker-compose.yml
             
             # Restart the services
