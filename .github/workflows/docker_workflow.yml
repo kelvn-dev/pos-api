@@ -102,7 +102,7 @@ jobs:
           ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
               -o IdentitiesOnly=yes \
               -o ProxyCommand='cloudflared access ssh --hostname %h' \
-              ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOSTNAME}} "
+              ${{secrets.SERVER_USER}}@${{secrets.SERVER_SSH_HOST}} "
             mkdir -p ~/.docker && echo '{\"credsStore\":\"\"}' > ~/.docker/config.json && \
             cd ~/vinpos && \
             pwd && \
