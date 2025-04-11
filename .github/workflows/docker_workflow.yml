@@ -83,7 +83,5 @@ jobs:
             && sed -i '' 's|image: kelvn/vinpos-api:.*|image: kelvn/vinpos-api:${IMAGE_TAG}|' docker-compose.yml
             
             # Restart the services
-            && docker-compose up -d
-            
-            # Clean up old images
-            && docker image prune -f"
+            && docker compose up -d
+            && exit 0"
