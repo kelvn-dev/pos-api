@@ -49,3 +49,35 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  deploy:
+    needs: build_docker_images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Cloudflared
+        run: |
+          curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared.deb
+          rm cloudflared.deb
+
+      - name: Create SSH key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_ssh_key
+          chmod 600 ~/.ssh/deploy_ssh_key
+
+      - name: Deploy to remote server
+        run: |
+          NEW_TAG="sha-$(git rev-parse --short HEAD)"
+          ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
+              -o ProxyCommand='cloudflared access ssh --hostname %h' \
+              vinbrain@api.meikocn.com << EOF
+            # Update the image tag in docker-compose.yml
+            sed -i '' 's|image: kelvn/vinpos-api:.*|image: ${{secrets.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:${NEW_TAG}|' docker-compose.yml
+            
+            # Restart the services
+            cd ~/vinpos
+            docker-compose pull api
+            docker-compose up -d
+            
+            # Clean up old images
+            docker image prune -f          
