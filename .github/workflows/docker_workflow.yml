@@ -12,10 +12,14 @@ jobs:
     name: Build Docker Image To Dockerhub
     runs-on: [ubuntu-latest]
     outputs:
-      sha_tag: sha-${{ github.sha }}
+      image_tag: sha-${{ steps.sha.outputs.short }}
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
+      
+      - name: Get short SHA
+        id: sha
+        run: echo "short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -69,7 +73,7 @@ jobs:
 
       - name: Deploy to remote server
         run: |
-          IMAGE_TAG="${{ needs.build_docker_images.outputs.sha_tag }}"
+          IMAGE_TAG="${{ needs.build_docker_images.outputs.image_tag }}"
           echo "Using image: ${IMAGE_TAG}"
           ssh -i ~/.ssh/deploy_ssh_key -o StrictHostKeyChecking=no \
               -o ProxyCommand='cloudflared access ssh --hostname %h' \
@@ -84,4 +88,5 @@ jobs:
             docker-compose up -d
             
             # Clean up old images
-            docker image prune -f          
+            docker image prune -f     
+          EOF     
