@@ -1,5 +1,7 @@
 package net.vinpos.api.controller.rest;
 
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import net.vinpos.api.mapping.rest.TableMapper;
 import net.vinpos.api.model.TableEntity;
@@ -10,9 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/customer/tables")
