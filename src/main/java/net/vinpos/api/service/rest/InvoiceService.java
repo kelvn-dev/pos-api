@@ -4,8 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.UUID;
 import net.vinpos.api.dto.rest.request.InvoiceReqDto;
 import net.vinpos.api.dto.rest.response.InvoiceResDto;
@@ -15,10 +17,13 @@ import net.vinpos.api.exception.BadRequestException;
 import net.vinpos.api.mapping.rest.InvoiceMapper;
 import net.vinpos.api.model.Invoice;
 import net.vinpos.api.model.Order;
+import net.vinpos.api.model.Shift;
 import net.vinpos.api.model.User;
 import net.vinpos.api.repository.InvoiceRepository;
+import net.vinpos.api.repository.ShiftRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,19 +36,21 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
   private final UserService userService;
   private final TableService tableService;
   @PersistenceContext private final EntityManager entityManager;
+  private final ShiftRepository shiftRepository;
 
   public InvoiceService(
           InvoiceRepository repository,
           InvoiceMapper invoiceMapper,
           OrderService orderService,
           UserService userService, TableService tableService,
-          EntityManager entityManager) {
+          EntityManager entityManager, ShiftRepository shiftRepository) {
     super(repository);
     this.invoiceMapper = invoiceMapper;
     this.orderService = orderService;
     this.userService = userService;
     this.tableService = tableService;
     this.entityManager = entityManager;
+    this.shiftRepository = shiftRepository;
   }
 
   @Transactional
@@ -54,6 +61,12 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
         && !order.getStatus().equals(OrderStatus.DELIVERED)) {
       throw new BadRequestException("Order is not in a valid state for invoicing");
     }
+
+    String id = getIdFromJwt();
+    Instant now = Instant.now();
+
+    Optional<Shift> shiftOptional = shiftRepository.findOpenShiftByManager(id, now);
+    Shift shift = shiftOptional.orElseThrow(() -> new BadRequestException("Shift not found"));
 
     BigDecimal totalAmount =
         order.getOrderItems().stream()
@@ -87,6 +100,7 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
             .changeAmount(changeAmount)
             .paymentMethod(dto.getPaymentMethod())
             .cashier(cashier)
+            .shift(shift)
             .build();
 
     orderService.updateStatusById(order.getId(), OrderStatus.PAID);
@@ -117,5 +131,10 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
     int randomInt = random.nextInt(999999);
     return String.format(
         "%s-%s-%s-%06d", prefix, timestamp, invoiceId.toString().substring(0, 8), randomInt);
+  }
+
+  private String getIdFromJwt() {
+    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    return jwt.getClaim("sub");
   }
 }

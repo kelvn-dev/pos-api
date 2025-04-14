@@ -1,5 +1,6 @@
 package net.vinpos.api.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import lombok.*;
@@ -38,4 +39,9 @@ public class Invoice extends BaseModel {
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
   private User cashier;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "shift_id")
+  @JsonBackReference
+  private Shift shift;
 }
