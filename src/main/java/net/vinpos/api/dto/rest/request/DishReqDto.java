@@ -12,4 +12,5 @@ public class DishReqDto {
   private String description;
   private Boolean isShown;
   private UUID categoryId;
+  private String image;
 }
