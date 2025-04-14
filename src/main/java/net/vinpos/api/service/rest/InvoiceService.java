@@ -33,11 +33,12 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
   @PersistenceContext private final EntityManager entityManager;
 
   public InvoiceService(
-          InvoiceRepository repository,
-          InvoiceMapper invoiceMapper,
-          OrderService orderService,
-          UserService userService, TableService tableService,
-          EntityManager entityManager) {
+      InvoiceRepository repository,
+      InvoiceMapper invoiceMapper,
+      OrderService orderService,
+      UserService userService,
+      TableService tableService,
+      EntityManager entityManager) {
     super(repository);
     this.invoiceMapper = invoiceMapper;
     this.orderService = orderService;
