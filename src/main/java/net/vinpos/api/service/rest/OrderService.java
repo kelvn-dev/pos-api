@@ -2,6 +2,8 @@ package net.vinpos.api.service.rest;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import net.vinpos.api.dto.rest.request.OrderItemReqDto;
@@ -13,7 +15,9 @@ import net.vinpos.api.mapping.rest.OrderMapper;
 import net.vinpos.api.model.Dish;
 import net.vinpos.api.model.Order;
 import net.vinpos.api.model.OrderItem;
+import net.vinpos.api.model.Shift;
 import net.vinpos.api.repository.OrderRepository;
+import net.vinpos.api.repository.ShiftRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,19 +27,21 @@ public class OrderService extends BaseService<Order, OrderRepository> {
   private final OrderMapper orderMapper;
   private final OrderItemMapper orderItemMapper;
   private final DishService dishService;
+    private final ShiftRepository shiftRepository;
   @PersistenceContext private final EntityManager entityManager;
 
   public OrderService(
-      OrderRepository repository,
-      OrderMapper orderMapper,
-      OrderItemMapper orderItemMapper,
-      DishService dishService,
-      EntityManager entityManager) {
+          OrderRepository repository,
+          OrderMapper orderMapper,
+          OrderItemMapper orderItemMapper,
+          DishService dishService, ShiftRepository shiftRepository,
+          EntityManager entityManager) {
     super(repository);
     this.orderMapper = orderMapper;
     this.orderItemMapper = orderItemMapper;
     this.dishService = dishService;
-    this.entityManager = entityManager;
+      this.shiftRepository = shiftRepository;
+      this.entityManager = entityManager;
   }
 
   @Transactional
@@ -50,6 +56,7 @@ public class OrderService extends BaseService<Order, OrderRepository> {
               OrderItem orderItem = orderItemMapper.dto2Model(item, dish);
               orderItems.add(orderItem);
             });
+
     order.setOrderItems(orderItems);
     return entityManager.merge(order);
   }
@@ -130,5 +137,9 @@ public class OrderService extends BaseService<Order, OrderRepository> {
     Order order = getById(id, false);
     order.setStatus(orderStatus);
     repository.save(order);
+  }
+
+  public List<Order> getList(Long startTime, Long endTime) {
+    return repository.getAllInStartEndTimeShift(startTime, endTime);
   }
 }

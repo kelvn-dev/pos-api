@@ -1,5 +1,8 @@
 package net.vinpos.api.mapping.rest;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import net.vinpos.api.dto.rest.request.OrderReqDto;
 import net.vinpos.api.dto.rest.response.OrderResDto;
@@ -22,17 +25,20 @@ public interface OrderMapper {
   @Mapping(source = "totalElements", target = "totalItems")
   @Mapping(source = "number", target = "pageIndex")
   @Mapping(
-      source = "content",
-      target = "items",
-      defaultExpression = "java(java.util.Collections.emptyList())")
+          source = "content",
+          target = "items",
+          defaultExpression = "java(java.util.Collections.emptyList())")
   PageResDto<OrderResDto> model2Dto(Page<Order> page);
 
   // Hàm hỗ trợ định dạng timestamp
   default String formatTimestamp(long epochSeconds) {
-    return java.time.format.DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy")
-        .format(
-            java.time.Instant.ofEpochSecond(epochSeconds)
-                .atZone(java.time.ZoneId.systemDefault())
-                .toLocalDateTime());
+    if (epochSeconds == 0) {
+      return null;
+    }
+    return DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy")
+            .format(
+                    Instant.ofEpochSecond(epochSeconds)
+                            .atZone(ZoneId.of("Asia/Ho_Chi_Minh"))
+                            .toLocalDateTime());
   }
 }

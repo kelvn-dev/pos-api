@@ -11,4 +11,5 @@ public class TableResDto {
   private String description;
   private TableStatus status;
   private String floorName;
+  private String openedAt;
 }

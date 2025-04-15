@@ -62,10 +62,9 @@ public class InvoiceService extends BaseService<Invoice, InvoiceRepository> {
       throw new BadRequestException("Order is not in a valid state for invoicing");
     }
 
-    String id = getIdFromJwt();
     Instant now = Instant.now();
 
-    Optional<Shift> shiftOptional = shiftRepository.findOpenShiftByManager(id, now);
+    Optional<Shift> shiftOptional = shiftRepository.findOpenShift(now);
     Shift shift = shiftOptional.orElseThrow(() -> new BadRequestException("Shift not found"));
 
     BigDecimal totalAmount =
