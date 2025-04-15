@@ -27,20 +27,18 @@ public class OrderService extends BaseService<Order, OrderRepository> {
   private final OrderMapper orderMapper;
   private final OrderItemMapper orderItemMapper;
   private final DishService dishService;
-    private final ShiftRepository shiftRepository;
   @PersistenceContext private final EntityManager entityManager;
 
   public OrderService(
           OrderRepository repository,
           OrderMapper orderMapper,
           OrderItemMapper orderItemMapper,
-          DishService dishService, ShiftRepository shiftRepository,
+          DishService dishService,
           EntityManager entityManager) {
     super(repository);
     this.orderMapper = orderMapper;
     this.orderItemMapper = orderItemMapper;
     this.dishService = dishService;
-      this.shiftRepository = shiftRepository;
       this.entityManager = entityManager;
   }
 
@@ -137,9 +135,5 @@ public class OrderService extends BaseService<Order, OrderRepository> {
     Order order = getById(id, false);
     order.setStatus(orderStatus);
     repository.save(order);
-  }
-
-  public List<Order> getList(Long startTime, Long endTime) {
-    return repository.getAllInStartEndTimeShift(startTime, endTime);
   }
 }
