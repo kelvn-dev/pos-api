@@ -1,4 +1,4 @@
-package net.vinpos.api.sqli;
+package net.vinpos.api.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -7,20 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.vinpos.api.model.BaseModel;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
-@Table(name = "account")
+@Table(name = "book")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicUpdate
-public class Account extends BaseModel {
-  @Column(name = "username", nullable = false, updatable = false)
-  private String username;
+public class Book extends BaseModel {
+  @Column(name = "name", nullable = false)
+  private String name;
 
-  @Column(name = "password", nullable = false)
-  private String password;
+  @Column(name = "author")
+  private String author;
 }

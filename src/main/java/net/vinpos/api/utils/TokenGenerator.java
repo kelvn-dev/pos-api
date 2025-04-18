@@ -1,4 +1,4 @@
-package net.vinpos.api.sqli;
+package net.vinpos.api.utils;
 
 import java.security.SecureRandom;
 import java.util.Base64;

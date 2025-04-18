@@ -53,20 +53,20 @@ services:
       - GF_PATHS_DATA=/data/grafana
     networks:
       - vinpos-network
-  api:
-    container_name: vinpos-api
-    image: kelvn/vinpos-api:sha-ec27851
-  #    build:
-  #      context: .
-  #      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    networks:
-      - vinpos-network
-    depends_on:
-      - db
-      - redis
-      - grafana
+#  api:
+#    container_name: vinpos-api
+#    image: kelvn/vinpos-api:sha-ec27851
+#  #    build:
+#  #      context: .
+#  #      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - vinpos-network
+#    depends_on:
+#      - db
+#      - redis
+#      - grafana
   nginx:
     image: owasp/modsecurity-crs:3.3.4-nginx-alpine-202304160904
     container_name: vinpos-nginx-waf

@@ -1,6 +1,6 @@
-package net.vinpos.api.sqli;
+package net.vinpos.api.repository;
 
 import java.util.UUID;
-import net.vinpos.api.repository.BaseRepository;
+import net.vinpos.api.model.Book;
 
 public interface BookRepository extends BaseRepository<Book, UUID> {}

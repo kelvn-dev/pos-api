@@ -1,4 +1,4 @@
-package net.vinpos.api.sqli;
+package net.vinpos.api.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import net.vinpos.api.model.Book;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

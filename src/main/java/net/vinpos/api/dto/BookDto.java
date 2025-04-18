@@ -1,4 +1,4 @@
-package net.vinpos.api.sqli;
+package net.vinpos.api.dto;
 
 import lombok.Data;
 
