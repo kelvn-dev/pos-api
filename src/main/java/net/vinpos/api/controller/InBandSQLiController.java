@@ -71,7 +71,7 @@ public class InBandSQLiController {
 
     Map<String, String> response = new HashMap<>();
     response.put("token", TokenGenerator.generateToken());
-    return ResponseEntity.ok(accounts);
+    return ResponseEntity.ok(response);
   }
 
   /**
